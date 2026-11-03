@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Entorno
+.env
+.env.local
+
+# Experimentos y artefactos pesados (P1)
+experiments/models/
+experiments/outputs/*.png
+!experiments/outputs/**/.gitkeep
+*.ckpt
+*.safetensors
+*.pth
+
+# Datos de prueba pesados y archivos temporales
+backend/uploads/
+Thumbs.db
+.DS_Store
