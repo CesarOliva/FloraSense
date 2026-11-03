@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FloraSense — Frontend
 
-## Getting Started
+Next.js (App Router) + TypeScript + Tailwind 4 + shadcn/ui.
 
-First, run the development server:
+## Ejecutar
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Por defecto la app usa **respuestas simuladas** (`src/lib/mocks.ts`), así que funciona sin backend.
+Para conectarla a FastAPI, en `.env.local`:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+NEXT_PUBLIC_USE_MOCKS=false
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Pantallas
 
-## Learn More
+| Ruta | Herramienta | Qué hace |
+|---|---|---|
+| `/` | Inicio | Las 4 herramientas de cuidado y "Mis plantas" |
+| `/diagnosticar` | Diagnosticar | Fotos (1–3) → confirmar especie → entorno → salud, recomendaciones, ficha y segmentación |
+| `/identificar` | Identificar | Una foto → especie + ficha de cuidados → "Agregar a mis plantas" |
+| `/calculadora-agua` | Calculadora de agua | Planta guardada o foto nueva → maceta y entorno → cantidad y frecuencia de riego |
+| `/recordatorios` | Recordatorios | Próximo riego de cada planta guardada, "La regué hoy" y ajuste de frecuencia |
 
-To learn more about Next.js, take a look at the following resources:
+En Diagnosticar, tras `POST /api/analyze` se pide `POST /api/segment` (Grounding DINO + SAM 2);
+si falla, el resto de resultados no se ve afectado.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Mis plantas** se guardan en el navegador (`localStorage`, ver `src/lib/plants-store.ts`) porque
+el MVP no tiene cuentas ni base de datos. La calculadora de agua (`src/lib/water.ts`) es una
+estimación orientativa en el cliente.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Estructura
 
-## Deploy on Vercel
+```
+src/
+├── app/                 layout y página principal
+├── components/
+│   ├── flow/            Diagnosticar: pasos del asistente y orquestador (analysis-flow.tsx)
+│   ├── results/         salud, recomendaciones, ficha, visor con segmentación
+│   ├── identify/        Identificar: hook de identificación + panel (también lo usa la calculadora)
+│   ├── water/           Calculadora de agua
+│   ├── reminders/       Recordatorios
+│   ├── home/            Mis plantas en el inicio
+│   ├── photo/, plants/  captura de foto y miniatura de planta compartidas
+│   └── ui/              componentes shadcn
+└── lib/
+    ├── types.ts         contrato con el backend (equivalente a los schemas Pydantic)
+    ├── api.ts           cliente HTTP, timeouts y mensajes de error
+    ├── mocks.ts         respuestas simuladas
+    ├── labels.ts        textos en español para los enums
+    ├── plants-store.ts  Mis plantas (localStorage) y cálculo del próximo riego
+    ├── water.ts         estimación de cantidad y frecuencia de riego
+    └── validation.ts    tipos y tamaño de imagen permitidos
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contrato con el backend
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `POST /api/identify` — campo `images` (1–3 archivos) → `{ candidates: SpeciesCandidate[] }`
+- `POST /api/analyze` — `images`, `species` (JSON de `SelectedSpecies`), `context` (JSON de `EnvironmentContext`) → `AnalysisResult`
+- `POST /api/segment` — campo `image` → `{ available, overlayUrl?, note? }`
+- `GET /api/plants/{id}` → `PlantProfile` o 404
+
+`PlantProfile` en `src/lib/types.ts` es la forma propuesta para las entradas de `plants.json`
+(incluye `sunExposure`, `waterNeeds` y `prevention`); acordarla con el responsable del catálogo.
