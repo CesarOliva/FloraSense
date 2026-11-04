@@ -1,9 +1,5 @@
-import {
-    mockAnalyze,
-    mockIdentify,
-    mockProfiles,
-    mockSegment,
-} from "@/lib/mocks";
+import { mockAnalyze, mockIdentify, mockProfiles, mockSegment } from "@/lib/mocks";
+
 import type {
     AnalysisResult,
     EnvironmentContext,
