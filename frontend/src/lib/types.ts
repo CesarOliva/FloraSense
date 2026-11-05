@@ -90,6 +90,26 @@ export type HealthStatus =
 
 export type SunExposure = "full_sun" | "partial_sun" | "indirect" | "shade";
 export type WaterNeeds = "low" | "medium" | "high";
+export type CareDifficulty = "easy" | "medium" | "hard";
+
+/** Tipo de problema; decide la ilustración de su tarjeta. */
+export type ProblemKind =
+  | "yellowing"
+  | "brown_tips"
+  | "spots"
+  | "pests"
+  | "root_rot"
+  | "fading";
+
+export type CommonProblem = {
+  name: string;
+  /** Cómo reconocerlo en la planta. */
+  signs: string;
+  /** Qué suele provocarlo y cómo evitarlo o corregirlo. */
+  solution: string;
+  /** Opcional: sin él, la tarjeta usa una ilustración genérica. */
+  kind?: ProblemKind;
+};
 
 // Forma propuesta de cada entrada de backend/data/plants.json.
 // El contrato la expone como Record<string, unknown>; acordar campos con Dev C.
@@ -101,9 +121,15 @@ export type PlantProfile = {
   sunExposure: SunExposure;
   light: string;
   waterNeeds: WaterNeeds;
+  /** Qué tan exigente es de cuidar; opcional hasta que el catálogo del backend lo incluya. */
+  difficulty?: CareDifficulty;
+  /** Problemas que suelen aparecer en esta especie. */
+  commonProblems?: CommonProblem[];
   watering: { criterion: string; frequencyHint?: string };
   temperature: { minC: number; maxC: number };
   humidity: string;
+  /** Solo en plantas que agradecen nebulizar (agua en gotas muy finas) para subir la humedad. */
+  misting?: string;
   substrate: string;
   drainage: string;
   size?: string;

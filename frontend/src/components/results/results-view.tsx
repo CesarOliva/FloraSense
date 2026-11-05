@@ -14,7 +14,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { Photo } from "@/components/photo/photo-slot";
 import { AddPlantButton } from "@/components/plants/add-plant-button";
-import { CareProfile, PreventionCard } from "@/components/results/care-profile";
+import {
+  CareProfile,
+  CommonProblemsCard,
+  PreventionCard,
+} from "@/components/results/care-profile";
 import { HealthPanel, healthStatusClass } from "@/components/results/health-panel";
 import {
   PlantViewer,
@@ -215,6 +219,9 @@ export function ResultsView({
         {profile && (
           <div className="space-y-6 lg:col-span-2">
             <CareProfile profile={profile} />
+            {profile.commonProblems && profile.commonProblems.length > 0 && (
+              <CommonProblemsCard problems={profile.commonProblems} />
+            )}
             {profile.prevention.length > 0 && (
               <PreventionCard tips={profile.prevention} />
             )}

@@ -1,6 +1,6 @@
-# FloraSense
+# FotoSinDisease
 
-MVP para identificar plantas ornamentales a partir de fotos, analizar visualmente su ambiente y proponer cuidados contextualizados. Ver `docs/FloraSense_Plan_Implementacion_8_Dias.md` para el plan completo, contratos de API y cronograma.
+**FotoSinDisease** (proyecto FloraSense) es un MVP para identificar plantas ornamentales a partir de fotos, analizar visualmente su ambiente y proponer cuidados contextualizados. Ver `docs/FloraSense_Plan_Implementacion_8_Dias.md` para el plan completo, contratos de API y cronograma. El logo, los colores y el tono de la marca están en `docs/identidad-marca.md`.
 
 ## Estructura del monorepo
 

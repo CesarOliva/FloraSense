@@ -7,7 +7,11 @@ import { LoadingPanel } from "@/components/flow/status-panels";
 import { IdentificationPanel } from "@/components/identify/identification-panel";
 import { usePlantIdentification } from "@/components/identify/use-plant-identification";
 import { AddPlantButton } from "@/components/plants/add-plant-button";
-import { CareProfile, PreventionCard } from "@/components/results/care-profile";
+import {
+  CareProfile,
+  CommonProblemsCard,
+  PreventionCard,
+} from "@/components/results/care-profile";
 import { makeThumbnail } from "@/lib/image";
 import { BASE_INTERVAL_DAYS } from "@/lib/water";
 
