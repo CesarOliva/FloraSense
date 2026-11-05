@@ -7,7 +7,11 @@ import { LoadingPanel } from "@/components/flow/status-panels";
 import { IdentificationPanel } from "@/components/identify/identification-panel";
 import { usePlantIdentification } from "@/components/identify/use-plant-identification";
 import { AddPlantButton } from "@/components/plants/add-plant-button";
-import { CareProfile, PreventionCard } from "@/components/results/care-profile";
+import {
+  CareProfile,
+  CommonProblemsCard,
+  PreventionCard,
+} from "@/components/results/care-profile";
 import { makeThumbnail } from "@/lib/image";
 import { BASE_INTERVAL_DAYS } from "@/lib/water";
 
@@ -74,9 +78,14 @@ export function IdentifyTool() {
           {profile && (
             <div className="grid gap-6 lg:grid-cols-2">
               <CareProfile profile={profile} />
-              {profile.prevention.length > 0 && (
-                <PreventionCard tips={profile.prevention} />
-              )}
+              <div className="space-y-6">
+                {profile.commonProblems && profile.commonProblems.length > 0 && (
+                  <CommonProblemsCard problems={profile.commonProblems} />
+                )}
+                {profile.prevention.length > 0 && (
+                  <PreventionCard tips={profile.prevention} />
+                )}
+              </div>
             </div>
           )}
 

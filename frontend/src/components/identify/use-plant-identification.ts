@@ -7,7 +7,7 @@ import { validateImage } from "@/lib/validation";
 export type IdentifyState =
   | { status: "idle" }
   | { status: "loading" }
-  | { status: "error"; error: string }
+  | { status: "error"; error: string }  
   | { status: "success"; candidates: SpeciesCandidate[] };
 
 export type ProfileState =
