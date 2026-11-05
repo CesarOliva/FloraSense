@@ -52,7 +52,7 @@ export function IdentificationPanel({
             <LoadingPanel
                 photoUrl={photo?.url}
                 title="Identificando tu planta…"
-                description="Comparamos tu foto con imágenes de referencia de Pl@ntNet."
+                description="Comparando tus fotos con la base de datos de especies."
             />
         );
     }

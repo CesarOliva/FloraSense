@@ -25,19 +25,20 @@ export function usePlantIdentification() {
   const requestId = useRef(0);
   const requestedProfiles = useRef(new Set<string>());
 
-  async function loadProfile(catalogId: string) {
-    if (requestedProfiles.current.has(catalogId)) return;
-    requestedProfiles.current.add(catalogId);
-    setProfiles((prev) => ({ ...prev, [catalogId]: { status: "loading" } }));
+  async function loadProfile(candidate: SpeciesCandidate) {
+    const profileKey = candidate.scientificName;
+    if (requestedProfiles.current.has(profileKey)) return;
+    requestedProfiles.current.add(profileKey);
+    setProfiles((prev) => ({ ...prev, [profileKey]: { status: "loading" } }));
     try {
-      const profile = await getPlantProfile(catalogId);
+      const profile = await getPlantProfile(candidate.scientificName, candidate.catalogId);
       setProfiles((prev) => ({
         ...prev,
-        [catalogId]: { status: "success", profile },
+        [profileKey]: { status: "success", profile },
       }));
     } catch {
-      requestedProfiles.current.delete(catalogId);
-      setProfiles((prev) => ({ ...prev, [catalogId]: { status: "error" } }));
+      requestedProfiles.current.delete(profileKey);
+      setProfiles((prev) => ({ ...prev, [profileKey]: { status: "error" } }));
     }
   }
 
@@ -49,8 +50,8 @@ export function usePlantIdentification() {
       const { candidates } = await identifyPlant([file]);
       if (id !== requestId.current) return;
       setIdentify({ status: "success", candidates });
-      const catalogId = candidates[0]?.catalogId;
-      if (catalogId) void loadProfile(catalogId);
+      const firstCandidate = candidates[0];
+      if (firstCandidate) void loadProfile(firstCandidate);
     } catch (error) {
       if (id !== requestId.current) return;
       setIdentify({
@@ -78,8 +79,8 @@ export function usePlantIdentification() {
   function choose(index: number) {
     setSelected(index);
     if (identify.status !== "success") return;
-    const catalogId = identify.candidates[index]?.catalogId;
-    if (catalogId) void loadProfile(catalogId);
+    const chosen = identify.candidates[index];
+    if (chosen) void loadProfile(chosen);
   }
 
   function reset() {
@@ -95,9 +96,7 @@ export function usePlantIdentification() {
     identify.status === "success" ? identify.candidates[selected] : undefined;
   const profileState: ProfileState | undefined = !candidate
     ? undefined
-    : candidate.catalogId
-      ? (profiles[candidate.catalogId] ?? { status: "loading" })
-      : { status: "success", profile: null };
+    : (profiles[candidate.scientificName] ?? { status: "loading" });
 
   return {
     photo,
@@ -109,7 +108,7 @@ export function usePlantIdentification() {
     selectPhoto,
     choose,
     retry: () => photo && void identifyFile(photo.file),
-    retryProfile: () => candidate?.catalogId && void loadProfile(candidate.catalogId),
+    retryProfile: () => candidate && void loadProfile(candidate),
     reset,
   };
 }

@@ -19,11 +19,20 @@ export type EnvironmentContext = {
   city?: string;
 };
 
+export type RelatedImage = {
+  url: string;
+  originalUrl: string;
+  organ?: string | null;
+  author?: string | null;
+  license?: string | null;
+};
+
 export type SpeciesCandidate = {
   scientificName: string;
   commonNames: string[];
   score: number | null; // puntuación original de Pl@ntNet; no probabilidad clínica
   catalogId?: string;
+  relatedImages?: RelatedImage[];
 };
 
 export type IdentifyResponse = {

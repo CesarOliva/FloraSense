@@ -17,7 +17,7 @@ export const USE_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== "false";
 const IDENTIFY_TIMEOUT_MS = 30_000;
 const ANALYZE_TIMEOUT_MS = 90_000;
 const SEGMENT_TIMEOUT_MS = 60_000;
-const PROFILE_TIMEOUT_MS = 15_000;
+const PROFILE_TIMEOUT_MS = 190_000;
 
 export class ApiError extends Error {
     constructor(
@@ -108,14 +108,17 @@ export function resolveApiUrl(url: string) {
 export async function identifyPlant(files: File[]): Promise<IdentifyResponse> {
     if (USE_MOCKS) {
         await delay(1200);
+        console.log("/api/identify", mockIdentify);
         return mockIdentify;
     }
 
-    return request<IdentifyResponse>(
+    const result = await request<IdentifyResponse>(
         "/api/identify",
         { method: "POST", body: imagesForm(files) },
         IDENTIFY_TIMEOUT_MS
     );
+    console.log("/api/identify", result);
+    return result;
 }
 
 export async function analyzePlant(
@@ -155,18 +158,21 @@ export async function segmentPlant(file: File): Promise<SegmentationResult> {
     );
 }
 
-/** Ficha del catálogo, o null si la especie no está en él. */
+/** Ficha por nombre científico: simulada en modo mock o generada por Ollama. */
 export async function getPlantProfile(
-    catalogId: string
+    scientificName: string,
+    catalogId?: string
 ): Promise<PlantProfile | null> {
     if (USE_MOCKS) {
         await delay(500);
 
-        return mockProfiles[catalogId] ?? null;
+        return (catalogId ? mockProfiles[catalogId] : Object.values(mockProfiles).find(
+            (profile) => profile.scientificName === scientificName
+        )) ?? null;
     }
     try {
         return await request<PlantProfile>(
-            `/api/plants/${encodeURIComponent(catalogId)}`,
+            `/api/plants/profile?scientificName=${encodeURIComponent(scientificName)}`,
             {},
             PROFILE_TIMEOUT_MS
         );

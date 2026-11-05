@@ -56,3 +56,26 @@ uvicorn main:app --reload     # http://localhost:8000
 - Ramas: `feat/frontend-*`, `feat/api-*`, `feat/ai-*`, `feat/segmentation-*`.
 - Respuestas mock desde el Día 1; el frontend nunca depende de APIs activas.
 - Sin base de datos en el MVP; imágenes temporales.
+
+## Fichas de cuidados con Ollama local
+
+Instala el modelo con `ollama pull llama3.1:8b` y ejecuta Ollama
+(`ollama serve` si no está iniciado). En `backend/.env` configura
+`OLLAMA_BASE_URL=http://localhost:11434` y `OLLAMA_MODEL=llama3.1:8b`.
+Inicia FastAPI con `cd backend` y `uvicorn main:app --reload`.
+
+Al identificar una planta o seleccionar otra coincidencia, el frontend envía su
+nombre científico a `GET /api/plants/profile?scientificName=Monstera%20deliciosa`.
+El backend solicita JSON estructurado a Ollama y valida los campos de
+`PlantProfile`, equivalentes a las entradas de `mockProfiles`. Las fichas se
+reutilizan por nombre durante la sesión del componente; los errores permiten
+reintentar. La generación dispone de 180 segundos en el backend.
+
+`NEXT_PUBLIC_USE_MOCKS` controla todas las respuestas simuladas, incluidas las fichas.
+Con `true` (por defecto), el frontend usa los mocks y no requiere Ollama.
+Con `false` en `frontend/.env.local`, las fichas se generan con Ollama y la
+identificación usa Pl@ntNet; configura `PLANTNET_API_KEY` en el backend.
+Reinicia Next.js después de modificar estas variables.
+
+El modelo genera cuidados a partir del nombre, no analiza la salud de la foto.
+`sources` se devuelve vacío porque no se consultan fuentes externas verificadas.

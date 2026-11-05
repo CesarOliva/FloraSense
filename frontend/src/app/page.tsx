@@ -47,7 +47,7 @@ export default function Home() {
                 className="h-11 rounded-full bg-white px-5 text-base text-hero shadow-md hover:bg-white/90"
               >
                 <Link href="/identificar">
-                  <Camera data-icon="inline-start" aria-hidden />
+                  <Camera className="ml-1 size-6" data-icon="inline-start" aria-hidden />
                   Tomar una foto
                 </Link>
               </Button>
