@@ -5,6 +5,15 @@
      2–2.6 s     brota la hoja de la "i" de Sin
      2.8 s       se va el nombre y se abre la app */
 
+/* Bloquea el documento desde el primer pintado y hasta retirar el splash. */
+@media (prefers-reduced-motion: no-preference) {
+  html:has(.splash),
+  body:has(.splash) {
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+}
+
 .splash {
   position: fixed;
   inset: 0;
