@@ -1,0 +1,136 @@
+/* Animación de entrada (splash.tsx). Cada pieza recibe sus tiempos en
+   --d (empieza) y --t (duración); --settle es cuando aparece el nombre normal.
+     0.15–1.7 s  cada letra crece como rama por su contorno
+     1.8 s       se va el contorno y aparece el nombre normal
+     2–2.6 s     brota la hoja de la "i" de Sin
+     2.8 s       se va el nombre y se abre la app */
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  color: var(--foreground);
+  background:
+    radial-gradient(
+      60% 40% at 50% 50%,
+      color-mix(in oklch, var(--primary) 8%, transparent),
+      transparent 70%
+    ),
+    var(--background);
+  animation: splash-out 0.45s ease-in-out 2.95s forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash {
+    display: none;
+  }
+}
+
+/* Al tocar la pantalla se salta. */
+.splash-leaving {
+  animation: splash-out 0.25s ease-out forwards;
+}
+
+.splash-title {
+  width: min(86vw, 34rem);
+  height: auto;
+  overflow: visible;
+  animation: splash-title-out 0.35s ease-in 2.8s forwards;
+}
+
+/* --- Letras que crecen como ramas ---------------------------------------- */
+
+.splash-outline {
+  fill: none;
+  stroke: var(--logo-shade);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 1.01;
+  animation:
+    splash-draw var(--t) ease-in-out var(--d) both,
+    splash-fade 0.45s ease var(--settle) forwards;
+}
+
+/* --- El nombre normal ----------------------------------------------------- */
+
+.splash-word {
+  opacity: 0;
+  animation: splash-appear 0.45s ease var(--settle) forwards;
+}
+
+.splash-ink {
+  fill: var(--foreground);
+}
+
+.splash-accent {
+  fill: var(--primary);
+}
+
+.splash-stem {
+  fill: none;
+  stroke: var(--logo-shade);
+  stroke-linecap: round;
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 1.01;
+  animation: splash-draw 0.25s ease-out 2s both;
+}
+
+/* La hoja-obturador brota desde la punta del tallo. */
+.splash-logo-leaf {
+  transform-box: view-box;
+  transform-origin: 252.49px -60.23px;
+  animation: splash-leaf 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 2.15s both;
+}
+
+/* --- Keyframes ----------------------------------------------------------- */
+
+@keyframes splash-draw {
+  from {
+    stroke-dashoffset: 1.01;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes splash-fade {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes splash-appear {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes splash-leaf {
+  from {
+    transform: scale(0) rotate(-35deg);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes splash-title-out {
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes splash-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}

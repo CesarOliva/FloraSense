@@ -7,7 +7,7 @@ import { LOCKUP, MARK } from "@/components/brand/logo-paths";
  * en `currentColor`; si no, cada aspa mezcla --logo-shade y --logo-light según
  * la luz que recibe.
  */
-function LeafShutter({
+export function LeafShutter({
   id,
   light,
   gap,

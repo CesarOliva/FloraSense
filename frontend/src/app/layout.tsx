@@ -3,6 +3,7 @@ import { Fraunces, Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import { FlaskConical } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
+import { Splash } from "@/components/brand/splash";
 import { DesktopNav, MobileNav } from "@/components/site-nav";
 import { USE_MOCKS } from "@/lib/api";
 import "./globals.css";
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        <Splash />
         <header className="sticky top-0 z-30 border-b border-border/60 bg-background/75 backdrop-blur-lg">
           <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-3 px-4">
             <Link
