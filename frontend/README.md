@@ -1,4 +1,4 @@
-# FloraSense — Frontend
+# FotoSinDisease — Frontend
 
 Next.js (App Router) + TypeScript + Tailwind 4 + shadcn/ui.
 

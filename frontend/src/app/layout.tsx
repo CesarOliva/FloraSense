@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Fraunces, Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
-import { FlaskConical, Sprout } from "lucide-react";
+import { FlaskConical } from "lucide-react";
+import { Logo } from "@/components/brand/logo";
 import { DesktopNav, MobileNav } from "@/components/site-nav";
 import { USE_MOCKS } from "@/lib/api";
 import "./globals.css";
@@ -22,7 +23,11 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: { default: "FloraSense", template: "%s · FloraSense" },
+  title: {
+    default: "FotoSinDisease · Tu planta sana, desde una foto",
+    template: "%s · FotoSinDisease",
+  },
+  applicationName: "FotoSinDisease",
   description:
     "Identifica tu planta con una foto y recibe cuidados, riego y prevención de problemas adaptados a tu hogar.",
 };
@@ -38,14 +43,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-3 px-4">
             <Link
               href="/"
-              className="flex items-center gap-2 rounded-lg outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+              className="rounded-lg outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
             >
-              <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                <Sprout className="size-4.5" aria-hidden />
-              </span>
-              <span className="font-heading text-xl font-semibold tracking-tight">
-                FloraSense
-              </span>
+              <Logo />
             </Link>
             <div className="flex items-center gap-2">
               <DesktopNav />
@@ -66,7 +66,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <footer className="hidden border-t py-6 text-center text-xs text-muted-foreground md:block">
           <p className="mx-auto max-w-5xl px-4">
-            FloraSense ofrece orientación a partir de fotografías; no reemplaza
+            FotoSinDisease ofrece orientación a partir de fotografías; no reemplaza
             el diagnóstico de un especialista.
           </p>
         </footer>

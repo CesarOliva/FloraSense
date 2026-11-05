@@ -1,4 +1,5 @@
 import type {
+  CareDifficulty,
   Drainage,
   HealthStatus,
   LastWatered,
@@ -44,6 +45,18 @@ export const sunExposureLabels: Record<SunExposure, string> = {
   partial_sun: "Semisombra",
   indirect: "Luz indirecta",
   shade: "Sombra",
+};
+
+export const difficultyLabels: Record<CareDifficulty, string> = {
+  easy: "Fácil de cuidar",
+  medium: "Dificultad media",
+  hard: "Exigente",
+};
+
+export const difficultyHints: Record<CareDifficulty, string> = {
+  easy: "Perdona descuidos y se adapta a casi cualquier hogar.",
+  medium: "Necesita algo de atención a la luz, el riego y la humedad.",
+  hard: "Requiere condiciones y rutina constantes; es poco tolerante a errores.",
 };
 
 export const healthStatusLabels: Record<HealthStatus, string> = {

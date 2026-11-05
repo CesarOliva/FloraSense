@@ -19,6 +19,30 @@ export const mockProfiles: Record<string, PlantProfile> = {
     family: "Araceae",
     sunExposure: "indirect",
     waterNeeds: "medium",
+    difficulty: "easy",
+    commonProblems: [
+      {
+        name: "Hojas amarillas",
+        kind: "yellowing",
+        signs: "Hojas bajas que se vuelven amarillas y blandas.",
+        solution:
+          "Casi siempre es exceso de riego: deja secar los primeros centímetros del sustrato y revisa el drenaje.",
+      },
+      {
+        name: "Puntas marrones y secas",
+        kind: "brown_tips",
+        signs: "Bordes o puntas de las hojas crujientes y marrones.",
+        solution:
+          "Suele ser aire seco o riego irregular: sube la humedad y riega de forma más constante.",
+      },
+      {
+        name: "Araña roja",
+        kind: "pests",
+        signs: "Puntitos claros en las hojas y telarañas finas en el envés.",
+        solution:
+          "Aparece con ambiente seco y caliente: limpia las hojas, aumenta la humedad y trata con jabón potásico.",
+      },
+    ],
     light:
       "Luz indirecta brillante. Tolera algo de sol suave de mañana; el sol directo intenso quema las hojas.",
     watering: {
@@ -29,6 +53,8 @@ export const mockProfiles: Record<string, PlantProfile> = {
     },
     temperature: { minC: 15, maxC: 27 },
     humidity: "Media a alta (más de 50 %). Agradece agrupar plantas o un humidificador.",
+    misting:
+      "Nebuliza las hojas con agua fina 1–2 veces por semana, por la mañana y con agua sin cal. Si hay hongos o manchas, déjalo.",
     substrate: "Aireado: fibra de coco o turba con corteza de pino y perlita.",
     drainage: "Imprescindible. Maceta con agujeros y sin agua acumulada en el plato.",
     size: "1–3 m en interior",
@@ -50,6 +76,29 @@ export const mockProfiles: Record<string, PlantProfile> = {
     family: "Araceae",
     sunExposure: "indirect",
     waterNeeds: "medium",
+    difficulty: "easy",
+    commonProblems: [
+      {
+        name: "Pudrición de raíz",
+        kind: "root_rot",
+        signs: "Hojas amarillas, tallos blandos y sustrato siempre mojado.",
+        solution:
+          "Por exceso de agua: riega solo cuando la mitad superior esté seca y asegura el drenaje.",
+      },
+      {
+        name: "Pérdida del jaspeado",
+        kind: "fading",
+        signs: "Las hojas nuevas salen más verdes y con menos manchas claras.",
+        solution: "Le falta luz: acércala a una ventana con luz indirecta brillante.",
+      },
+      {
+        name: "Cochinilla algodonosa",
+        kind: "pests",
+        signs: "Motas blancas y algodonosas en las axilas de las hojas.",
+        solution:
+          "Retírala con un algodón con alcohol y revisa la planta cada semana durante un mes.",
+      },
+    ],
     light:
       "Luz indirecta. Tolera poca luz, aunque las variedades jaspeadas pierden color.",
     watering: {
