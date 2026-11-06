@@ -9,11 +9,27 @@ import {
   TipOfTheDay,
 } from "@/components/home/home-live";
 import { MyPlantsPreview } from "@/components/home/my-plants-preview";
-import { LeafDecor, PottedPlant } from "@/components/illustrations";
-import { TOOLS } from "@/components/tools";
+import type { ComponentType } from "react";
+import {
+  CalendarDecor,
+  LeafDecor,
+  PhoneScanDecor,
+  PlantScanDecor,
+  PottedPlant,
+  WateringDecor,
+} from "@/components/illustrations";
+import { TOOLS, type ToolId } from "@/components/tools";
 
 const enter =
   "fill-mode-both duration-500 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-3";
+
+/** Ilustración de cada herramienta, en la esquina inferior derecha de su tarjeta. */
+const TOOL_DECOR: Record<ToolId, ComponentType<{ className?: string }>> = {
+  diagnose: PlantScanDecor,
+  identify: PhoneScanDecor,
+  water: WateringDecor,
+  remind: CalendarDecor,
+};
 
 export default function Home() {
   return (
@@ -63,39 +79,47 @@ export default function Home() {
           Herramientas de cuidado
         </h2>
         <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-          {TOOLS.map(({ id, href, title, description, icon: Icon, surface }, i) => (
-            <li
-              key={href}
-              className={enter}
-              style={{ animationDelay: `${120 + i * 70}ms` }}
-            >
-              <Link
-                href={href}
-                className={cn(
-                  "group relative flex h-full min-h-40 flex-col justify-between gap-6 overflow-hidden rounded-3xl p-4 transition-all outline-none hover:-translate-y-1 hover:shadow-lg focus-visible:ring-3 focus-visible:ring-ring/50 sm:p-5",
-                  surface
-                )}
+          {TOOLS.map(({ id, href, title, description, icon: Icon, surface }, i) => {
+            const Decor = TOOL_DECOR[id];
+            return (
+              <li
+                key={href}
+                className={enter}
+                style={{ animationDelay: `${120 + i * 70}ms` }}
               >
-                <LeafDecor className="absolute -right-3 -bottom-8 h-28 rotate-[-20deg] opacity-10 transition-transform duration-500 group-hover:rotate-[-5deg]" />
-                <span className="relative flex size-12 items-center justify-center rounded-2xl bg-card/80 shadow-sm">
-                  <Icon className="size-6" aria-hidden />
-                  {id === "remind" && <DueBadge />}
-                </span>
-                <ArrowUpRight
-                  className="absolute top-4 right-4 size-5 opacity-40 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100"
-                  aria-hidden
-                />
-                <span className="relative">
-                  <span className="block font-heading text-lg leading-tight font-semibold">
-                    {title}
+                <Link
+                  href={href}
+                  className={cn(
+                    "group relative flex h-full min-h-40 flex-col justify-between gap-6 overflow-hidden rounded-3xl p-4 transition-all outline-none hover:-translate-y-1 hover:shadow-lg focus-visible:ring-3 focus-visible:ring-ring/50 sm:p-5",
+                    surface
+                  )}
+                >
+                  {/*
+                    Misma caja cuadrada en todas, así los dibujos quedan alineados.
+                    En móvil va arriba, a la altura del icono; desde sm, centrada en vertical.
+                  */}
+                  <Decor className="absolute top-2 right-3 size-16 opacity-85 transition duration-500 group-hover:scale-105 group-hover:opacity-100 sm:top-1/2 sm:right-4 sm:size-22 sm:-translate-y-1/2 lg:size-20" />
+                  <span className="relative flex size-12 items-center justify-center rounded-2xl bg-card/80 shadow-sm">
+                    <Icon className="size-6" aria-hidden />
+                    {id === "remind" && <DueBadge />}
                   </span>
-                  <span className="mt-1 block text-sm opacity-80">
-                    {description}
+                  <ArrowUpRight
+                    className="absolute top-4 right-4 size-5 opacity-40 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100 max-sm:hidden"
+                    aria-hidden
+                  />
+                  {/* Desde sm, el texto deja sitio a la ilustración. */}
+                  <span className="relative sm:pr-20">
+                    <span className="block font-heading text-lg leading-tight font-semibold">
+                      {title}
+                    </span>
+                    <span className="mt-1 block text-sm opacity-80">
+                      {description}
+                    </span>
                   </span>
-                </span>
-              </Link>
-            </li>
-          ))}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </section>
 

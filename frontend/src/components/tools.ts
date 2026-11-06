@@ -30,7 +30,7 @@ export const TOOLS: Tool[] = [
     title: "Diagnosticar",
     navTitle: "Diagnosticar",
     tabLabel: "Salud",
-    description: "Verifica la salud de tu planta",
+    description: "Comprueba la salud de tu planta",
     tagline: "Revisamos hojas, entorno y riego para decirte qué necesita.",
     icon: Stethoscope,
     surface: "bg-diagnose text-diagnose-foreground",

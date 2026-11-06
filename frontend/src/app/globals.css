@@ -23,6 +23,10 @@
   --animate-scan: scan 1.8s ease-in-out infinite alternate;
   --animate-sway: sway 4s ease-in-out infinite alternate;
   --animate-float: float 6s ease-in-out infinite alternate;
+  --animate-scan-leaf: scan-leaf 1.6s ease-in-out infinite alternate;
+  --animate-focus: focus 1.4s ease-in-out infinite alternate;
+  --animate-drip: drip 1.2s ease-in infinite;
+  --animate-ring: ring 2.5s ease-in-out infinite;
 
   @keyframes scan {
     from { top: 0%; }
@@ -35,6 +39,30 @@
   @keyframes float {
     from { transform: translateY(0); }
     to { transform: translateY(-8px); }
+  }
+  /* Línea que recorre el recuadro de la hoja enferma (unidades del SVG). */
+  @keyframes scan-leaf {
+    from { transform: translateY(0); }
+    to { transform: translateY(38px); }
+  }
+  /* Visor de cámara que enfoca (Identificar). */
+  @keyframes focus {
+    from { transform: scale(1); }
+    to { transform: scale(0.93); }
+  }
+  /* Gotas que caen de la regadera (Calculadora de agua). */
+  @keyframes drip {
+    0% { transform: translateY(-6px); opacity: 0; }
+    20%, 80% { opacity: 1; }
+    100% { transform: translateY(8px); opacity: 0; }
+  }
+  /* Campana que suena y descansa (Recordatorios). */
+  @keyframes ring {
+    0%, 50%, 100% { transform: rotate(0); }
+    10% { transform: rotate(16deg); }
+    20% { transform: rotate(-14deg); }
+    30% { transform: rotate(10deg); }
+    40% { transform: rotate(-6deg); }
   }
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);

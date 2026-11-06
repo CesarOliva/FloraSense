@@ -80,10 +80,10 @@ export function IdentifyTool() {
                         <div className="grid gap-6 lg:grid-cols-2">
                             <CareProfile profile={profile} />
                             <div className="space-y-6">
-                                {profile.commonProblems &&  profile.commonProblems.length > 0 && (
+                                {profile.commonProblems && profile.commonProblems.length > 0 && (
                                     <CommonProblemsCard problems={profile.commonProblems} />
                                 )}
-                                {profile.prevention && profile.prevention.length > 0 && (
+                                {profile.prevention.length > 0 && (
                                     <PreventionCard tips={profile.prevention} />
                                 )}
                             </div>
