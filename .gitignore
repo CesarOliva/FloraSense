@@ -23,3 +23,5 @@ experiments/outputs/*.png
 backend/uploads/
 Thumbs.db
 .DS_Store
+
+dataset/
