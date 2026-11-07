@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { CircleAlert, CircleQuestionMark, TriangleAlert } from "lucide-react";
+import { Camera, CircleAlert, CircleQuestionMark, ImagePlus, TriangleAlert } from "lucide-react";
+import { useState } from "react";
 import { cn } from "cn";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -21,10 +22,40 @@ export function IdentificationPanel({
     action?: React.ReactNode;
 }) {
     const { photo, photoError, identify, selected, candidate } = identification;
+    const [choosingSource, setChoosingSource] = useState(false);
+
+    function handleFile(file: File | undefined) {
+        if (file) identification.selectPhoto(file);
+    }
 
     if (identify.status === "idle") {
         return (
             <div className="mx-auto max-w-md">
+                <input
+                    id="identify-image-input"
+                    type="file"
+                    accept="image/*"
+                    className="sr-only"
+                    tabIndex={-1}
+                    aria-label="Seleccionar una imagen de la planta"
+                    onChange={(event) => {
+                        handleFile(event.target.files?.[0]);
+                        event.target.value = "";
+                    }}
+                />
+                <input
+                    id="identify-camera-input"
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    className="sr-only"
+                    tabIndex={-1}
+                    aria-label="Tomar una foto de la planta con la cámara"
+                    onChange={(event) => {
+                        handleFile(event.target.files?.[0]);
+                        event.target.value = "";
+                    }}
+                />
                 <PhotoSlot
                     title="Toma o sube una foto"
                     hint="Una sola planta, con buena luz y bien enfocada"
@@ -32,6 +63,29 @@ export function IdentificationPanel({
                     featured
                     onSelect={identification.selectPhoto}
                     onRemove={identification.reset}
+                    onRequestSelect={() => setChoosingSource(true)}
+                    selectionContent={choosingSource ? (
+                        <div className="flex size-full flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed bg-card p-4 text-center">
+                            <span className="text-md font-medium">¿Cómo quieres agregar tu foto?</span>
+                            <div className="flex w-full flex-col gap-2 sm:flex-row sm:justify-center">
+                                <Button asChild size="lg">
+                                    <label htmlFor="identify-camera-input" className="cursor-pointer">
+                                        <Camera data-icon="inline-start" aria-hidden />
+                                        Abrir cámara
+                                    </label>
+                                </Button>
+                                <Button asChild size="lg" variant="outline">
+                                    <label htmlFor="identify-image-input" className="cursor-pointer">
+                                        <ImagePlus data-icon="inline-start" aria-hidden />
+                                        Seleccionar imagen
+                                    </label>
+                                </Button>
+                            </div>
+                            <Button size="sm" variant="ghost" onClick={() => setChoosingSource(false)}>
+                                Volver
+                            </Button>
+                        </div>
+                    ) : undefined}
                     className="sm:aspect-4/3"
                 />
                 {photoError && (

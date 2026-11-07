@@ -34,7 +34,7 @@ FloraSense/
 ```bash
 cd frontend
 npm install
-npm run dev        # http://localhost:3000
+npm run dev        # http://192.168.1.103:3000
 cp .env.example .env.local   # configurar NEXT_PUBLIC_API_BASE_URL
 ```
 
@@ -46,7 +46,7 @@ python -m venv .venv
 .venv\Scripts\activate        # Windows
 pip install -r requirements.txt
 cp .env.example .env          # completar claves de API
-uvicorn main:app --reload     # http://localhost:8000
+uvicorn main:app --reload --host 0.0.0.0 --port 8000   # http://192.168.1.103:8000
 ```
 
 ## Convenciones
@@ -61,8 +61,10 @@ uvicorn main:app --reload     # http://localhost:8000
 
 Instala el modelo con `ollama pull llama3.1:8b` y ejecuta Ollama
 (`ollama serve` si no está iniciado). En `backend/.env` configura
-`OLLAMA_BASE_URL=http://localhost:11434` y `OLLAMA_MODEL=llama3.1:8b`.
-Inicia FastAPI con `cd backend` y `uvicorn main:app --reload`.
+`OLLAMA_BASE_URL=http://192.168.1.103:11434` y `OLLAMA_MODEL=llama3.1:8b`.
+Para que Ollama acepte conexiones desde la IP de red, inícialo con
+`OLLAMA_HOST=0.0.0.0 ollama serve`. Inicia FastAPI con `cd backend` y
+`uvicorn main:app --reload --host 0.0.0.0 --port 8000`.
 
 Al identificar una planta o seleccionar otra coincidencia, el frontend envía su
 nombre científico a `GET /api/plants/profile?scientificName=Monstera%20deliciosa`.

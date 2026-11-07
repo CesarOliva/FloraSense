@@ -17,6 +17,8 @@ export function PhotoSlot({
   onSelect,
   onRemove,
   className,
+  selectionContent,
+  onRequestSelect,
 }: {
   title: string;
   hint: string;
@@ -25,6 +27,8 @@ export function PhotoSlot({
   onSelect: (file: File) => void;
   onRemove: () => void;
   className?: string;
+  selectionContent?: React.ReactNode;
+  onRequestSelect?: () => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
@@ -84,9 +88,13 @@ export function PhotoSlot({
           </Button>
         </>
       ) : (
+        selectionContent ?? (
         <button
           type="button"
-          onClick={() => inputRef.current?.click()}
+          onClick={() => {
+            if (onRequestSelect) onRequestSelect();
+            else inputRef.current?.click();
+          }}
           onDragOver={(e) => {
             e.preventDefault();
             setDragging(true);
@@ -117,6 +125,7 @@ export function PhotoSlot({
           <span className="text-sm font-medium">{title}</span>
           <span className="text-xs text-muted-foreground">{hint}</span>
         </button>
+        )
       )}
     </div>
   );

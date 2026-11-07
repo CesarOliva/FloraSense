@@ -7,14 +7,14 @@ Next.js (App Router) + TypeScript + Tailwind 4 + shadcn/ui.
 ```bash
 npm install
 cp .env.example .env.local
-npm run dev        # http://localhost:3000
+npm run dev        # http://192.168.1.103:3000
 ```
 
 Por defecto la app usa **respuestas simuladas** (`src/lib/mocks.ts`), así que funciona sin backend.
 Para conectarla a FastAPI, en `.env.local`:
 
 ```
-NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+NEXT_PUBLIC_API_BASE_URL=http://192.168.1.103:8000
 NEXT_PUBLIC_USE_MOCKS=false
 ```
 

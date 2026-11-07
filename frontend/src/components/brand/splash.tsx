@@ -143,16 +143,15 @@ const vars = (values: Record<string, string>) => values as React.CSSProperties;
 
 export function Splash() {
   const id = useId();
-  const [phase, setPhase] = useState<"playing" | "leaving" | "done">("playing");
+  const [phase, setPhase] = useState<"playing" | "done">("playing");
 
   if (phase === "done") return null;
 
   return (
     <div
       aria-hidden
-      className={`splash ${phase === "leaving" ? "splash-leaving" : ""}`}
+      className="splash"
       style={vars({ "--settle": seconds(SETTLE) })}
-      onClick={() => setPhase("leaving")}
       onAnimationEnd={(event) => {
         if (event.target === event.currentTarget) setPhase("done");
       }}
